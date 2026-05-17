@@ -84,5 +84,10 @@ go build -ldflags "-s -w -H windowsgui" -o QBFind.exe
 
 ---
 
+## 🤝 Collaboration Acknowledgement
+This project was modularized and prepared for production release via a pair-programming collaboration between the author and **Antigravity**, an advanced agentic AI coding assistant designed by the **Google DeepMind** team.
+
+---
+
 ## 📄 License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
