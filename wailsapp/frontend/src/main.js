@@ -580,6 +580,17 @@ function closeInfoModal() {
 // Text Preview Modal
 elBtnPreview.addEventListener('click', openPreview);
 
+function formatPreviewText(fileName, text) {
+    if (!/\.json$/i.test(fileName)) {
+        return text;
+    }
+    try {
+        return JSON.stringify(JSON.parse(text), null, 2);
+    } catch {
+        return text;
+    }
+}
+
 async function openPreview() {
     const item = await getSelected();
     if (!item) return;
@@ -597,7 +608,7 @@ async function openPreview() {
     try {
         const res = await GetPreview(item.path, item.size, item.name);
         if (res.success) {
-            elPreviewContentBox.textContent = res.text;
+            elPreviewContentBox.textContent = formatPreviewText(item.name, res.text);
         } else {
             elPreviewContentBox.textContent = "Error reading file preview.";
         }
