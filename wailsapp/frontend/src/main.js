@@ -66,6 +66,7 @@ const elResultsList = document.getElementById('results-list');
 const elStatusIndicator = document.getElementById('status-indicator');
 const elStatusText = document.getElementById('status-text');
 const elLangBtn = document.getElementById('btn-lang');
+const elThemeBtn = document.getElementById('btn-theme');
 const elToastContainer = document.getElementById('toast-container');
 
 // Toolbar Buttons
@@ -105,6 +106,37 @@ document.getElementById('btn-minimize').addEventListener('click', () => wailsrun
 document.getElementById('btn-maximize').addEventListener('click', () => wailsruntime.WindowToggleMaximise());
 document.getElementById('btn-close').addEventListener('click', () => wailsruntime.Quit());
 
+// Persistent Theme Switching & Icon Rendering
+const savedTheme = localStorage.getItem('theme') || 'dark';
+if (savedTheme === 'light') {
+    document.body.classList.add('light-theme');
+    updateThemeIcon(true);
+} else {
+    updateThemeIcon(false);
+}
+
+elThemeBtn.addEventListener('click', () => {
+    const isLight = document.body.classList.toggle('light-theme');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    updateThemeIcon(isLight);
+    showToast(
+        currentLanguage === 'tr' 
+            ? (isLight ? "Açık tema aktif edildi" : "Koyu tema aktif edildi")
+            : (isLight ? "Light theme enabled" : "Dark theme enabled"),
+        "info"
+    );
+});
+
+function updateThemeIcon(isLight) {
+    if (isLight) {
+        // Show Moon icon in light mode to switch back to dark
+        elThemeBtn.innerHTML = `<svg viewBox="0 0 24 24" class="theme-icon-moon" style="width: 14px; height: 14px;"><path fill="currentColor" d="M12 3c.132 0 .263 0 .393.007a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 3zm1 2.112A7.002 7.002 0 0 0 18.888 11 7 7 0 1 0 13 5.112z"/></svg>`;
+    } else {
+        // Show Sun icon in dark mode to switch to light
+        elThemeBtn.innerHTML = `<svg viewBox="0 0 24 24" class="theme-icon-sun" style="width: 14px; height: 14px;"><path fill="currentColor" d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.01c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>`;
+    }
+}
+
 // 4. Initial Startup Hook
 window.addEventListener('DOMContentLoaded', async () => {
     // Load initial language
@@ -138,6 +170,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 const tooltipTranslations = {
     en: {
         "btn-lang": "Switch Language",
+        "btn-theme": "Toggle Dark/Light Theme",
         "btn-minimize": "Minimize Window",
         "btn-maximize": "Maximize Window",
         "btn-close": "Close Application",
@@ -151,6 +184,7 @@ const tooltipTranslations = {
     },
     tr: {
         "btn-lang": "Dili Değiştir",
+        "btn-theme": "Açık/Koyu Tema Değiştir",
         "btn-minimize": "Pencereyi Küçült",
         "btn-maximize": "Pencereyi Büyüt / Ekranı Kapla",
         "btn-close": "Uygulamayı Kapat",

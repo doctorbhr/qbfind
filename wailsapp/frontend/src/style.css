@@ -1025,3 +1025,100 @@ body, html {
   height: 14px;
   color: var(--accent-violet);
 }
+
+/* ==========================================================================
+   8. Premium Apple-Inspired Light/White Theme overrides
+   ========================================================================== */
+body.light-theme {
+  --bg-black: #f8f9fa;       /* Off-white, soft background */
+  --bg-darker: #ffffff;      /* Pure white title bar */
+  --bg-dark: #f1f3f5;        /* Sleek light grey toolbar */
+  --bg-surface: #ffffff;     /* Pure white for inner panels and modals */
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(124, 58, 237, 0.5);
+  
+  --text-primary: #1a1a1c;   /* Deep charcoal primary text */
+  --text-secondary: #495057; /* Rich dark grey secondary text */
+  --text-muted: #868e96;     /* Modern grey muted text */
+  
+  --accent-violet: #6d28d9;  /* Deeper royal violet */
+  --accent-pink: #be185d;    /* Deeper rose pink */
+  --accent-green: #047857;   /* Deeper emerald green */
+  --accent-blue: #1d4ed8;    /* Deeper cobalt blue */
+  
+  --shadow-neon: 0 0 12px rgba(109, 40, 217, 0.12);
+  --shadow-glowing-btn: 0 0 8px rgba(109, 40, 217, 0.25);
+}
+
+/* Light Theme Component Specific Refinements */
+body.light-theme .result-row:hover {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+body.light-theme .result-row.selected {
+  background: linear-gradient(90deg, rgba(109, 40, 217, 0.08) 0%, rgba(109, 40, 217, 0.02) 100%) !important;
+  border-color: rgba(109, 40, 217, 0.2) !important;
+  color: #1a1a1c !important;
+}
+
+body.light-theme .result-row.selected .col-data.path-col {
+  color: #495057 !important;
+}
+
+body.light-theme .col-header {
+  color: var(--text-muted) !important;
+}
+
+body.light-theme .keyboard-tip kbd {
+  background-color: #f1f3f5 !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  color: #495057 !important;
+}
+
+body.light-theme ::-webkit-scrollbar-track {
+  background-color: #f8f9fa !important;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+body.light-theme ::-webkit-scrollbar-thumb:hover {
+  background-color: var(--accent-violet) !important;
+}
+
+body.light-theme .results-placeholder svg {
+  color: rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-theme .results-placeholder p {
+  color: var(--text-secondary) !important;
+}
+
+body.light-theme .modal-overlay {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+body.light-theme .modal-container {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 0 30px rgba(109, 40, 217, 0.05) !important;
+}
+
+body.light-theme .code-container {
+  background-color: #f8f9fa !important;
+  color: #1a1a1c !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme .row-actions-trigger {
+  background-color: #ffffff !important;
+}
+
+body.light-theme [data-tooltip]::after {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  color: #1a1a1c !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 0 10px rgba(109, 40, 217, 0.04) !important;
+}
