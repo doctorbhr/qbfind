@@ -92,15 +92,24 @@ const elInfoModalText = document.getElementById('info-modal-text');
 const elBtnInfoClose = document.getElementById('btn-info-close');
 const elBtnInfoOk = document.getElementById('btn-info-ok');
 
-// Window Minimize & Close Action bindings
-document.getElementById('btn-minimize').addEventListener('click', () => wailsruntime.WindowMinimize());
-document.getElementById('btn-close').addEventListener('click', () => wailsruntime.WindowClose());
+// Right-Click Context Menu DOM
+const elContextMenu = document.getElementById('context-menu');
+const elCtxOpen = document.getElementById('ctx-open');
+const elCtxPreview = document.getElementById('ctx-preview');
+const elCtxCopyPath = document.getElementById('ctx-copy-path');
+const elCtxDesktop = document.getElementById('ctx-desktop');
+const elCtxExplorer = document.getElementById('ctx-explorer');
+
+// Window Controls Action Bindings (Wails British English spellings)
+document.getElementById('btn-minimize').addEventListener('click', () => wailsruntime.WindowMinimise());
+document.getElementById('btn-maximize').addEventListener('click', () => wailsruntime.WindowToggleMaximise());
+document.getElementById('btn-close').addEventListener('click', () => wailsruntime.Quit());
 
 // 4. Initial Startup Hook
 window.addEventListener('DOMContentLoaded', async () => {
     // Load initial language
     const lang = await GetLanguage();
-    currentLanguage = lang === 'TR' ? 'tr' : 'en';
+    currentLanguage = lang.toLowerCase() === 'tr' ? 'tr' : 'en';
     
     // Configure initial localization
     applyTranslations();
@@ -125,7 +134,36 @@ window.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
-// 5. Localization Functions
+// 5. Localization Functions & Tooltips Dictionary
+const tooltipTranslations = {
+    en: {
+        "btn-lang": "Switch Language",
+        "btn-minimize": "Minimize Window",
+        "btn-maximize": "Maximize Window",
+        "btn-close": "Close Application",
+        "btn-open": "Open Selected (Enter)",
+        "btn-preview": "Preview Text (Space)",
+        "btn-copy-path": "Copy File Path (Ctrl+C)",
+        "btn-desktop": "Copy to Desktop",
+        "btn-explorer": "Reveal in Explorer",
+        "btn-refresh": "Re-index System Drives",
+        "btn-info": "About QBFind"
+    },
+    tr: {
+        "btn-lang": "Dili Değiştir",
+        "btn-minimize": "Pencereyi Küçült",
+        "btn-maximize": "Pencereyi Büyüt / Ekranı Kapla",
+        "btn-close": "Uygulamayı Kapat",
+        "btn-open": "Seçileni Aç (Enter)",
+        "btn-preview": "Metni Önizle (Space)",
+        "btn-copy-path": "Dosya Yolunu Kopyala (Ctrl+C)",
+        "btn-desktop": "Masaüstüne Kopyala",
+        "btn-explorer": "Dosya Konumunu Aç",
+        "btn-refresh": "Sistem Disklerini Yeniden Tara",
+        "btn-info": "QBFind Hakkında"
+    }
+};
+
 function applyTranslations() {
     const t = i18n[currentLanguage];
     
@@ -137,6 +175,13 @@ function applyTranslations() {
     
     // Update placeholders
     elSearchInput.placeholder = t.SearchPlaceholder;
+
+    // Localize custom responsive tooltips
+    const tt = tooltipTranslations[currentLanguage];
+    for (const [id, text] of Object.entries(tt)) {
+        const el = document.getElementById(id);
+        if (el) el.setAttribute('data-tooltip', text);
+    }
 }
 
 function updateLanguageToggleUI() {
@@ -144,7 +189,7 @@ function updateLanguageToggleUI() {
 }
 
 elLangBtn.addEventListener('click', () => {
-    const newLang = currentLanguage === 'tr' ? 'EN' : 'TR';
+    const newLang = currentLanguage === 'tr' ? 'en' : 'tr';
     SetLanguage(newLang);
 });
 
@@ -572,4 +617,59 @@ function formatNumber(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// 14. Custom Right-Click Context Menu Logic
+elResultsList.addEventListener('contextmenu', (e) => {
+    const row = e.target.closest('.result-row');
+    if (!row) return;
+    
+    e.preventDefault();
+    const idx = parseInt(row.dataset.index);
+    selectRow(idx);
+    
+    // Position and display context menu dynamically
+    elContextMenu.style.left = `${e.clientX}px`;
+    elContextMenu.style.top = `${e.clientY}px`;
+    elContextMenu.style.display = 'block';
+});
+
+elCtxOpen.addEventListener('click', async () => {
+    const item = await getSelected();
+    if (item) OpenFile(item.path);
+    hideContextMenu();
+});
+
+elCtxPreview.addEventListener('click', () => {
+    openPreview();
+    hideContextMenu();
+});
+
+elCtxCopyPath.addEventListener('click', () => {
+    triggerCopyPath();
+    hideContextMenu();
+});
+
+elCtxDesktop.addEventListener('click', async () => {
+    const item = await getSelected();
+    if (!item) return;
+    const msg = await CopyToDesktop(item.path);
+    showToast(msg);
+    hideContextMenu();
+});
+
+elCtxExplorer.addEventListener('click', async () => {
+    const item = await getSelected();
+    if (item) ShowInExplorer(item.path);
+    hideContextMenu();
+});
+
+document.addEventListener('click', (e) => {
+    if (!elContextMenu.contains(e.target)) {
+        hideContextMenu();
+    }
+});
+
+function hideContextMenu() {
+    elContextMenu.style.display = 'none';
 }

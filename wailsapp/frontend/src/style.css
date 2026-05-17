@@ -600,9 +600,9 @@ body, html {
 }
 
 .about-modal {
-  max-width: 440px;
+  max-width: 500px;
   height: auto;
-  max-height: 450px;
+  max-height: 90%;
 }
 
 .modal-header {
@@ -734,6 +734,7 @@ body, html {
   flex-direction: column;
   gap: 16px;
   background-color: var(--bg-surface);
+  overflow-y: auto;
 }
 
 .about-hero {
@@ -945,4 +946,82 @@ body, html {
 ::-webkit-scrollbar-thumb:hover {
   background-color: var(--accent-violet);
   box-shadow: var(--shadow-neon);
+}
+
+/* Custom Sleek HTML/CSS Tooltips */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.92);
+  background-color: rgba(10, 10, 12, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 10px;
+  font-family: var(--font-text);
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), 0 0 10px rgba(139, 92, 246, 0.05);
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+  transition-delay: 0.35s;
+}
+
+/* Custom Sleek Context Menu */
+.context-menu {
+  position: fixed;
+  display: none;
+  background-color: rgba(8, 8, 10, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 15px rgba(139, 92, 246, 0.08);
+  z-index: 10000;
+  width: 170px;
+  padding: 4px 0;
+  animation: menu-fade-in 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes menu-fade-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-bezier);
+}
+
+.context-menu-item:hover {
+  background-color: rgba(139, 92, 246, 0.15);
+  color: #ffffff;
+}
+
+.context-menu-item svg {
+  width: 14px;
+  height: 14px;
+  color: var(--accent-violet);
 }
