@@ -1,0 +1,26 @@
+# Binaries
+*.exe
+*.exe.manifest
+*.dll
+*.so
+*.dylib
+
+# Go module artifacts
+/vendor/
+/go.work
+/go.work.sum
+
+# IDE & Editor caches
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Project local caches & APPDATA dumps
+/QBFind/
+settings.txt
