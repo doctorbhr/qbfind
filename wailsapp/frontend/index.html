@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>QBFind</title>
+    <!-- Google Fonts for Ultra-Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Pitch-Black Frameless Desktop Container -->
+    <div class="app-container">
+        
+        <!-- Custom Draggable Titlebar -->
+        <div class="custom-titlebar" style="--wails-draggable:drag">
+            <div class="titlebar-logo">
+                <svg viewBox="0 0 24 24" class="logo-icon"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <span>QBFind</span>
+            </div>
+            
+            <div class="titlebar-controls" style="--wails-draggable:none">
+                <!-- Lang Toggle Button -->
+                <button id="btn-lang" class="titlebar-btn lang-btn" title="Switch Language">
+                    TR
+                </button>
+                <div class="controls-divider"></div>
+                <button id="btn-minimize" class="titlebar-btn" title="Minimize">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 13H5v-2h14v2z"/></svg>
+                </button>
+                <button id="btn-close" class="titlebar-btn close-hover" title="Close">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Premium Navigation Toolbar -->
+        <div class="app-toolbar">
+            <div class="toolbar-group">
+                <button id="btn-open" class="toolbar-btn primary-btn" title="Open Selected File (Enter)">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                    <span data-i18n="Open">Open</span>
+                </button>
+                <button id="btn-preview" class="toolbar-btn" title="Preview File Text (Space)">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    <span data-i18n="Preview">Preview</span>
+                </button>
+                <button id="btn-copy-path" class="toolbar-btn" title="Copy Path to Clipboard (Ctrl+C)">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                    <span data-i18n="CopyPath">Copy Path</span>
+                </button>
+                <button id="btn-desktop" class="toolbar-btn" title="Copy File to Desktop">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M22 2H2v16h20V2zm-2 14H4V4h16v12zM2 18v2h20v-2H2z"/></svg>
+                    <span data-i18n="Desktop">Desktop</span>
+                </button>
+                <button id="btn-explorer" class="toolbar-btn" title="Reveal in Windows Explorer">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-6 10H6v-2h8v2zm4-4H6v-2h12v2z"/></svg>
+                    <span data-i18n="Explorer">Explorer</span>
+                </button>
+            </div>
+            
+            <div class="toolbar-divider"></div>
+            
+            <div class="toolbar-group">
+                <button id="btn-refresh" class="toolbar-btn" title="Re-index System Drives">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+                </button>
+                <button id="btn-info" class="toolbar-btn" title="About QBFind">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Sleek Search Section -->
+        <div class="search-section">
+            <div class="search-input-wrapper">
+                <svg viewBox="0 0 24 24" class="search-input-icon"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="search-input" placeholder="Type at least 2 characters to search (e.g. report.pdf or *.exe)..." autocomplete="off" autofocus />
+                <button id="btn-clear-search" class="clear-search-btn" title="Clear Search (Esc)">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- High-Performance Virtualized Results List -->
+        <div class="results-container">
+            <div class="results-header">
+                <div class="col-header col-name" data-i18n="ColumnName">Name</div>
+                <div class="col-header col-path" data-i18n="ColumnPath">Path</div>
+                <div class="col-header col-size" data-i18n="ColumnSize">Size</div>
+                <div class="col-header col-modified" data-i18n="ColumnModified">Modified</div>
+            </div>
+            
+            <!-- Dynamic list container -->
+            <div id="results-list" class="results-list">
+                <!-- Rows injected dynamically by Javascript -->
+                <div class="results-placeholder">
+                    <svg viewBox="0 0 24 24" class="pulse-icon"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    <p data-i18n="StatusMinChars">Type at least 2 characters. Index: 0 items</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Pulsing Status Footer -->
+        <div class="app-status-bar">
+            <div class="status-left">
+                <span id="status-indicator" class="pulse-dot"></span>
+                <span id="status-text">Index: 0 items</span>
+            </div>
+            <div class="status-right">
+                <span class="keyboard-tip">
+                    <kbd>↑</kbd> <kbd>↓</kbd> <span data-i18n="Navigate">Navigate</span>
+                    <kbd>Enter</kbd> <span data-i18n="Open">Open</span>
+                    <kbd>Space</kbd> <span data-i18n="Preview">Preview</span>
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Advanced Pitch-Black Text Preview Modal -->
+    <div id="preview-modal" class="modal-overlay">
+        <div class="modal-container animate-zoom">
+            <div class="modal-header">
+                <div class="modal-header-left">
+                    <span class="modal-file-badge">TXT</span>
+                    <h3 id="preview-file-name" class="modal-title">file_preview.txt</h3>
+                    <span id="preview-file-size" class="modal-file-size">14 KB</span>
+                </div>
+                <div class="modal-header-right">
+                    <button id="btn-preview-copy" class="modal-action-btn" title="Copy Content">
+                        <svg viewBox="0 0 24 24" class="btn-icon"><path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+                        <span data-i18n="Copy">Copy</span>
+                    </button>
+                    <button id="btn-preview-close" class="modal-close-btn" title="Close Preview (Esc)">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <pre id="preview-content-box" class="code-container">Loading content...</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive About/Info Modal -->
+    <div id="info-modal" class="modal-overlay">
+        <div class="modal-container about-modal animate-zoom">
+            <div class="modal-header">
+                <h3 id="info-modal-title" class="modal-title" data-i18n="AboutTitle">About QBFind</h3>
+                <button id="btn-info-close" class="modal-close-btn">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+            <div class="modal-body about-body">
+                <div class="about-hero">
+                    <div class="about-icon">
+                        <svg viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    </div>
+                    <h2>QBFind</h2>
+                    <p class="about-version">Version 2.0.0 (Wails Edition)</p>
+                </div>
+                <div class="about-text">
+                    <p id="info-modal-text">High-performance Win32/Wails application.</p>
+                    <div class="about-collaboration">
+                        <h4>🤝 Collaboration</h4>
+                        <p>Designed and modularized through a pair-programming partnership with <strong>Antigravity</strong>, an advanced agentic AI coder developed by the <strong>Google DeepMind</strong> team.</p>
+                    </div>
+                </div>
+                <div class="about-footer">
+                    <button id="btn-info-ok" class="toolbar-btn primary-btn">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="./src/main.js" type="module"></script>
+</body>
+</html>
