@@ -24,3 +24,8 @@ Thumbs.db
 # Project local caches & APPDATA dumps
 /QBFind/
 settings.txt
+
+# Python cache files
+__pycache__/
+*.pyc
+
