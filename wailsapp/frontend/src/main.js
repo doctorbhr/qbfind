@@ -287,12 +287,21 @@ elSearchInput.addEventListener('input', (e) => {
     }, 150);
 });
 
-elClearSearch.addEventListener('click', () => {
+function clearSearch() {
     elSearchInput.value = "";
     currentQuery = "";
     elClearSearch.classList.remove('visible');
     performSearch("");
     elSearchInput.focus();
+}
+
+elClearSearch.addEventListener('click', clearSearch);
+
+elSearchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        clearSearch();
+        e.preventDefault();
+    }
 });
 
 async function performSearch(query) {
@@ -352,7 +361,7 @@ function renderResultsList() {
             badgeClass = 'badge-dir';
             badgeText = currentLanguage === 'tr' ? 'KLSR' : 'DIR';
         } else {
-            const ext = e.lowerExt.replace('.', '');
+            const ext = (e.lowerExt || '').replace('.', '');
             if (ext) {
                 badgeText = ext.toUpperCase().slice(0, 4);
                 if (['exe', 'bat', 'cmd', 'lnk', 'url'].includes(ext)) {
@@ -599,7 +608,7 @@ async function openPreview() {
     elPreviewFileSize.textContent = formatBytes(item.size);
     
     const extBadge = elPreviewModal.querySelector('.modal-file-badge');
-    const ext = item.lowerExt.replace('.', '').toUpperCase();
+    const ext = (item.lowerExt || '').replace('.', '').toUpperCase();
     extBadge.textContent = ext || 'FILE';
     
     elPreviewContentBox.textContent = currentLanguage === 'tr' ? 'Yükleniyor...' : 'Loading content...';
