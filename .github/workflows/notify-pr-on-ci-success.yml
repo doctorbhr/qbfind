@@ -1,0 +1,29 @@
+name: Notify PR on CI Success
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+jobs:
+  notify-pr:
+    name: Comment on PR when CI succeeds
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post comment to associated PRs
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prs = github.event.workflow_run.pull_requests || [];
+            if (prs.length === 0) {
+              core.info('No PR associated with this workflow run.');
+            }
+            for (const pr of prs) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: `CI passed for workflow run: ${context.payload.workflow_run.html_url}\n\nAll checks are green — you can merge this PR.`
+              });
+            }
